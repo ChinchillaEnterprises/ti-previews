@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>TI Mark · Rotation V3 · Three Dots · Clean Orbit</title>
+<title>TI Mark · Rotation · Brand Assets</title>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -63,7 +63,6 @@
     align-items: center;
     justify-content: center;
   }
-  .ti-stage svg { width: 100%; height: 100%; overflow: visible; }
 
   .static-png {
     width: 200px; height: 200px;
@@ -73,24 +72,30 @@
     background-position: center;
   }
 
-  .ti-svg .ti-ring {
-    transform-origin: 100px 100px;
-    transform-box: view-box;
+  .ti-mark {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+  }
+  .ti-mark .ti-ring {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     animation: ringSpin 22s linear infinite;
     will-change: transform;
+  }
+  .ti-mark .ti-letters {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 38%;
+    height: auto;
   }
   @keyframes ringSpin {
     from { transform: rotate(0deg); }
     to   { transform: rotate(360deg); }
-  }
-
-  .ti-letters {
-    font-family: 'Arial Black', 'Helvetica', sans-serif;
-    font-weight: 900;
-    font-size: 64px;
-    fill: var(--navy);
-    text-anchor: middle;
-    letter-spacing: -3px;
   }
 
   .size-strip {
@@ -117,8 +122,12 @@
   }
   .size-table td.size-cell { background: #fff; }
 
+  .ti-mark.s120 { width: 120px; height: 120px; }
+  .ti-mark.s64  { width: 64px;  height: 64px;  }
+  .ti-mark.s32  { width: 32px;  height: 32px;  }
+
   @media (prefers-reduced-motion: reduce) {
-    .ti-svg .ti-ring { animation: none !important; }
+    .ti-mark .ti-ring { animation: none !important; }
   }
 
   .spec-block {
@@ -145,29 +154,17 @@
     line-height: 1.6;
     overflow-x: auto;
   }
-
-  .geo-overlay {
-    position: relative;
-  }
-  .geo-overlay::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image:
-      radial-gradient(circle at 50% 50%, transparent 73px, rgba(255,0,0,0.15) 74px, rgba(255,0,0,0.15) 76px, transparent 77px);
-    pointer-events: none;
-  }
 </style>
 </head>
 <body>
 <div class="container">
 
-  <h1>TI Mark · Rotation V3 · Three Dots</h1>
-  <p class="subtitle">Locked numbers: orbit R=75, stroke=20, dot radius=10 (diameter matches stroke), three arcs of 60° alternating with three gaps of 60°. Dots sit on the orbit at 12, 4, 8 o'clock. Ring rotates as a rigid unit. 22s revolution.</p>
+  <h1>TI Mark · Rotation</h1>
+  <p class="subtitle">Marketing-supplied brand assets · ring + TI letters as separate PNGs from Peter. Ring rotates slowly around the static TI letters. Font and weight preserved exactly as marketing intended.</p>
 
   <div class="section">
     <h2>Today on dev · vs · Proposed</h2>
-    <p class="note">Left: shipped PNG, static. Right: three-dot mark with three arcs orbiting in conjunction. Dots and arc-ends share the same orbit radius (75) so the diameter from TI to every component is identical. Round arc ends and dots are visually separated by 19 units of clear arc-length on each side (3x clearance margin vs the broken V2).</p>
+    <p class="note">Left: shipped PNG, static. Right: ring rotates as a rigid unit. TI letters stay still and use Peter's exact brand typography. 22s per full revolution. Dot-and-arc geometry is the marketing-approved version from the assets Peter sent over.</p>
 
     <div class="compare-row">
 
@@ -179,20 +176,12 @@
       </div>
 
       <div class="compare-tile proposed">
-        <div class="compare-label">Proposed · 3 dots · slow rotation</div>
+        <div class="compare-label">Proposed · slow rotation · brand font</div>
         <div class="ti-stage">
-          <svg class="ti-svg" viewBox="0 0 200 200">
-            <g class="ti-ring">
-              <circle cx="100" cy="100" r="75" fill="none"
-                      stroke="#101B3A" stroke-width="20" stroke-linecap="round"
-                      stroke-dasharray="78.54 78.54"
-                      transform="rotate(-60 100 100)"/>
-              <circle cx="100" cy="25"  r="10" fill="#101B3A"/>
-              <circle cx="165" cy="138" r="10" fill="#101B3A"/>
-              <circle cx="35"  cy="138" r="10" fill="#101B3A"/>
-            </g>
-            <text class="ti-letters" x="100" y="120">TI</text>
-          </svg>
+          <div class="ti-mark">
+            <img class="ti-ring" src="./ti-ring.png" alt="">
+            <img class="ti-letters" src="./ti-letters.png" alt="TI">
+          </div>
         </div>
       </div>
 
@@ -201,7 +190,7 @@
 
   <div class="section">
     <h2>Size survival</h2>
-    <p class="note">Three production sizes: 120px (briefing card), 64px (mid), 32px (nav). All three dots and three arcs preserved at every size. At 32px the dot diameter renders at ~3.2px which matches the current PNG behavior.</p>
+    <p class="note">Three production sizes: 120px (briefing card), 64px (mid), 32px (nav). Ring rotation runs the same at every size. Reduced-motion users see a static mark.</p>
 
     <div class="size-strip">
       <table class="size-table">
@@ -221,39 +210,24 @@
             <td class="size-cell"><img src="./agent-ti-icon.png" width="32" height="32"></td>
           </tr>
           <tr>
-            <td class="row-label">Proposed V3</td>
+            <td class="row-label">Proposed</td>
             <td class="size-cell">
-              <svg class="ti-svg" viewBox="0 0 200 200" width="120" height="120">
-                <g class="ti-ring">
-                  <circle cx="100" cy="100" r="75" fill="none" stroke="#101B3A" stroke-width="20" stroke-linecap="round" stroke-dasharray="78.54 78.54" transform="rotate(-60 100 100)"/>
-                  <circle cx="100" cy="25" r="10" fill="#101B3A"/>
-                  <circle cx="165" cy="138" r="10" fill="#101B3A"/>
-                  <circle cx="35" cy="138" r="10" fill="#101B3A"/>
-                </g>
-                <text class="ti-letters" x="100" y="120">TI</text>
-              </svg>
+              <div class="ti-mark s120">
+                <img class="ti-ring" src="./ti-ring.png" alt="">
+                <img class="ti-letters" src="./ti-letters.png" alt="TI">
+              </div>
             </td>
             <td class="size-cell">
-              <svg class="ti-svg" viewBox="0 0 200 200" width="64" height="64">
-                <g class="ti-ring">
-                  <circle cx="100" cy="100" r="75" fill="none" stroke="#101B3A" stroke-width="20" stroke-linecap="round" stroke-dasharray="78.54 78.54" transform="rotate(-60 100 100)"/>
-                  <circle cx="100" cy="25" r="10" fill="#101B3A"/>
-                  <circle cx="165" cy="138" r="10" fill="#101B3A"/>
-                  <circle cx="35" cy="138" r="10" fill="#101B3A"/>
-                </g>
-                <text class="ti-letters" x="100" y="120">TI</text>
-              </svg>
+              <div class="ti-mark s64">
+                <img class="ti-ring" src="./ti-ring.png" alt="">
+                <img class="ti-letters" src="./ti-letters.png" alt="TI">
+              </div>
             </td>
             <td class="size-cell">
-              <svg class="ti-svg" viewBox="0 0 200 200" width="32" height="32">
-                <g class="ti-ring">
-                  <circle cx="100" cy="100" r="75" fill="none" stroke="#101B3A" stroke-width="20" stroke-linecap="round" stroke-dasharray="78.54 78.54" transform="rotate(-60 100 100)"/>
-                  <circle cx="100" cy="25" r="10" fill="#101B3A"/>
-                  <circle cx="165" cy="138" r="10" fill="#101B3A"/>
-                  <circle cx="35" cy="138" r="10" fill="#101B3A"/>
-                </g>
-                <text class="ti-letters" x="100" y="120">TI</text>
-              </svg>
+              <div class="ti-mark s32">
+                <img class="ti-ring" src="./ti-ring.png" alt="">
+                <img class="ti-letters" src="./ti-letters.png" alt="TI">
+              </div>
             </td>
           </tr>
         </tbody>
@@ -262,71 +236,35 @@
   </div>
 
   <div class="section">
-    <h2>Orbit verification · red ring at R=75</h2>
-    <p class="note">Diagnostic only: a thin red ring is overlaid at exactly R=75. Every arc edge and every dot center should sit on the red line. If any element drifts off the red line, geometry is wrong.</p>
-
-    <div class="compare-row">
-      <div class="compare-tile">
-        <div class="compare-label">Orbit overlay</div>
-        <div class="ti-stage geo-overlay">
-          <svg class="ti-svg" viewBox="0 0 200 200">
-            <g class="ti-ring">
-              <circle cx="100" cy="100" r="75" fill="none" stroke="#101B3A" stroke-width="20" stroke-linecap="round" stroke-dasharray="78.54 78.54" transform="rotate(-60 100 100)"/>
-              <circle cx="100" cy="25" r="10" fill="#101B3A"/>
-              <circle cx="165" cy="138" r="10" fill="#101B3A"/>
-              <circle cx="35" cy="138" r="10" fill="#101B3A"/>
-            </g>
-            <text class="ti-letters" x="100" y="120">TI</text>
-          </svg>
-        </div>
-      </div>
-      <div class="compare-tile">
-        <div class="compare-label">Static frame · animation paused</div>
-        <div class="ti-stage">
-          <svg viewBox="0 0 200 200" style="width:100%;height:100%">
-            <circle cx="100" cy="100" r="75" fill="none"
-                    stroke="#101B3A" stroke-width="20" stroke-linecap="round"
-                    stroke-dasharray="78.54 78.54"
-                    transform="rotate(-60 100 100)"/>
-            <circle cx="100" cy="25"  r="10" fill="#101B3A"/>
-            <circle cx="165" cy="138" r="10" fill="#101B3A"/>
-            <circle cx="35"  cy="138" r="10" fill="#101B3A"/>
-            <text class="ti-letters" x="100" y="120">TI</text>
-          </svg>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section">
     <h2>Spec for Bridge</h2>
-    <p class="note">Drop-in replacement for the PNG &lt;img&gt;. SVG component with one rotating &lt;g&gt;. Static text stays put. Reduced-motion media query already wired.</p>
+    <p class="note">Two real PNG assets from marketing (Peter): <code>ti-ring.png</code> (the orbital ring) and <code>ti-letters.png</code> (the TI wordmark). Ring rotates as a single rigid image. Letters stay still. No SVG, no font dependency.</p>
 
     <div class="spec-block">
-      <div class="heading">SVG + CSS</div>
-<pre>&lt;svg viewBox="0 0 200 200" className="ti-mark"&gt;
-  &lt;g className="ti-ring"&gt;
-    &lt;circle cx="100" cy="100" r="75" fill="none"
-            stroke="#101B3A" stroke-width="20" stroke-linecap="round"
-            stroke-dasharray="78.54 78.54"
-            transform="rotate(-60 100 100)" /&gt;
-    &lt;circle cx="100" cy="25"  r="10" fill="#101B3A" /&gt;
-    &lt;circle cx="165" cy="138" r="10" fill="#101B3A" /&gt;
-    &lt;circle cx="35"  cy="138" r="10" fill="#101B3A" /&gt;
-  &lt;/g&gt;
-  &lt;text x="100" y="120"
-        font-family="Arial Black, sans-serif"
-        font-weight="900" font-size="64"
-        fill="#101B3A"
-        text-anchor="middle"
-        letter-spacing="-3"&gt;TI&lt;/text&gt;
-&lt;/svg&gt;
+      <div class="heading">Markup + CSS</div>
+<pre>&lt;div className="ti-mark"&gt;
+  &lt;img className="ti-ring"    src="/images/ti-ring.png"    alt="" /&gt;
+  &lt;img className="ti-letters" src="/images/ti-letters.png" alt="TI" /&gt;
+&lt;/div&gt;
 
+.ti-mark {
+  position: relative;
+  width: 120px;   /* scales cleanly to any size */
+  height: 120px;
+}
 .ti-mark .ti-ring {
-  transform-origin: 100px 100px;
-  transform-box: view-box;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   animation: ringSpin 22s linear infinite;
   will-change: transform;
+}
+.ti-mark .ti-letters {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 38%;
+  height: auto;
 }
 
 @keyframes ringSpin {
