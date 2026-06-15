@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>TI Sparkle Pill · Blue + Yellow Stars</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cloud: #F1F4FA;
+    --black: #000000;
+    --navy: #101B3A;
+    --navy-light: #1A2B5E;
+    --yellow: #FFEF00;
+    --grey-300: #B9BEC5;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Oswald', sans-serif;
+    background:
+      radial-gradient(ellipse at 15% 30%, rgba(255, 239, 0, 0.10) 0%, transparent 50%),
+      radial-gradient(ellipse at 85% 75%, rgba(16, 27, 58, 0.10) 0%, transparent 50%),
+      var(--cloud);
+    min-height: 100vh;
+    padding: 48px 32px;
+    color: var(--black);
+  }
+
+  .container { max-width: 1080px; margin: 0 auto; }
+
+  h1 {
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 6px;
+  }
+  .subtitle {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 32px;
+    max-width: 760px;
+  }
+
+  .section {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    padding: 32px;
+    margin-bottom: 22px;
+  }
+  .section h2 {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .section .note {
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 24px;
+    max-width: 760px;
+  }
+
+  .state-row {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 24px;
+    align-items: center;
+    padding: 18px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+  .state-row:last-child { border-bottom: none; }
+  .state-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #777;
+  }
+  .state-label .desc {
+    display: block;
+    font-size: 11px;
+    color: #999;
+    font-weight: 400;
+    margin-top: 4px;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  /* The sparkle pill */
+  .sparkle-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    height: 36px;
+    padding: 0 14px;
+    border-radius: 999px;
+    border: 1.5px solid var(--navy);
+    background: transparent;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+  .sparkle-pill .star {
+    font-size: 16px;
+    line-height: 1;
+    color: var(--navy);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-block;
+  }
+  .sparkle-pill .star:nth-child(1) { transform: translateY(-1px); }
+  .sparkle-pill .star:nth-child(2) { transform: translateY(2px) scale(0.85); margin-left: -1px; }
+
+  /* ACTIVE: navy fill + yellow stars glowing */
+  .sparkle-pill.active {
+    background: var(--navy);
+    border-color: var(--navy);
+    box-shadow: 0 0 18px rgba(255, 239, 0, 0.40);
+  }
+  .sparkle-pill.active .star {
+    color: var(--yellow);
+    text-shadow: 0 0 8px rgba(255, 239, 0, 0.6);
+    animation: starTwinkle 1.4s ease-in-out infinite;
+  }
+  .sparkle-pill.active .star:nth-child(2) {
+    animation: starTwinkle 1.4s ease-in-out infinite 0.7s;
+    transform-origin: center;
+  }
+
+  @keyframes starTwinkle {
+    0%, 100% { transform: scale(1);   opacity: 1;   }
+    50%      { transform: scale(1.25); opacity: 0.75; }
+  }
+
+  /* PROCESSING: sweeping highlight on top of active */
+  .sparkle-pill.processing { position: relative; overflow: hidden; }
+  .sparkle-pill.processing::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,239,0,0.35), transparent);
+    animation: sweep 1.6s linear infinite;
+    pointer-events: none;
+  }
+  @keyframes sweep {
+    0%   { left: -100%; }
+    100% { left: 100%; }
+  }
+
+  /* Bigger preview pill row */
+  .hero-pill {
+    transform: scale(1.6);
+    transform-origin: left center;
+    margin-left: 12px;
+  }
+
+  /* Live demo: real input bar */
+  .live-demo {
+    background: rgba(16, 27, 58, 0.03);
+    border-radius: 999px;
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: 640px;
+    border: 1px solid rgba(0,0,0,0.06);
+  }
+  .live-demo input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: 'Oswald', sans-serif;
+    font-size: 15px;
+    padding: 8px 14px;
+    color: var(--navy);
+  }
+  .live-demo input::placeholder { color: #B9BEC5; }
+  .send-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: all 0.3s ease;
+  }
+  .send-btn:hover { background: var(--navy-light); }
+
+  .palette {
+    display: flex;
+    gap: 24px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+  .swatch {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    color: #444;
+  }
+  .swatch .chip {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.08);
+  }
+  .swatch .chip.navy { background: var(--navy); }
+  .swatch .chip.yellow { background: var(--yellow); }
+
+  .spec-block {
+    background: rgba(16, 27, 58, 0.04);
+    border-left: 3px solid var(--navy);
+    padding: 18px 22px;
+    border-radius: 6px;
+    margin-top: 18px;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .spec-block .heading {
+    font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+    font-size: 10px; color: var(--navy); margin-bottom: 8px;
+  }
+  .spec-block pre {
+    background: var(--navy);
+    color: #fff;
+    padding: 14px 16px;
+    border-radius: 6px;
+    margin-top: 10px;
+    font-family: ui-monospace, monospace;
+    font-size: 11px;
+    line-height: 1.6;
+    overflow-x: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sparkle-pill.active .star,
+    .sparkle-pill.processing::after { animation: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <h1>TI Sparkle Pill · Blue + Yellow Stars</h1>
+  <p class="subtitle">Navy blue bubble with yellow sparkle stars. Stars glow + twinkle when you type. Sweep highlight runs while the AI is processing. Matches the BeonInfinity / TI rebrand color (navy <code>#101B3A</code>) paired with the original Beon-yellow sparkles you wanted back.</p>
+
+  <div class="section">
+    <h2>Three states</h2>
+    <p class="note">Idle is the resting outline. Active fires the moment a character lands in the input — fills navy, stars turn yellow and twinkle. Processing layers a sweeping highlight on top of active while the AI is thinking.</p>
+
+    <div class="state-row">
+      <div class="state-label">
+        Idle
+        <span class="desc">Empty input, cursor not focused</span>
+      </div>
+      <div>
+        <div class="sparkle-pill hero-pill">
+          <span class="star">&#x2726;</span><span class="star">&#x2726;</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="state-row">
+      <div class="state-label">
+        Active · on type
+        <span class="desc">User has typed at least one character</span>
+      </div>
+      <div>
+        <div class="sparkle-pill active hero-pill">
+          <span class="star">&#x2726;</span><span class="star">&#x2726;</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="state-row">
+      <div class="state-label">
+        Processing
+        <span class="desc">After submit, while AI generates the answer</span>
+      </div>
+      <div>
+        <div class="sparkle-pill active processing hero-pill">
+          <span class="star">&#x2726;</span><span class="star">&#x2726;</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Try it · live input</h2>
+    <p class="note">Click into the bar and start typing. Pill activates on first character. Hit return to switch into processing for ~3s, then it relaxes back to idle.</p>
+
+    <div class="live-demo" id="liveBar">
+      <input type="text" id="liveInput" placeholder="Ask TI a question..." autocomplete="off">
+      <div class="sparkle-pill" id="livePill">
+        <span class="star">&#x2726;</span><span class="star">&#x2726;</span>
+      </div>
+      <button class="send-btn" id="sendBtn" title="Submit">&rarr;</button>
+    </div>
+
+    <div class="palette">
+      <div class="swatch"><div class="chip navy"></div>Navy &middot; <code>#101B3A</code> &middot; bubble fill + border</div>
+      <div class="swatch"><div class="chip yellow"></div>Yellow &middot; <code>#FFEF00</code> &middot; stars when active</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Spec for Bridge</h2>
+    <p class="note">Drop-in CSS for the sparkle pill component. Activation logic is two class toggles: <code>.active</code> on input change, <code>.processing</code> on submit.</p>
+
+    <div class="spec-block">
+      <div class="heading">CSS</div>
+<pre>.sparkle-pill {
+  display: inline-flex; align-items: center; gap: 4px;
+  height: 36px; padding: 0 14px;
+  border-radius: 999px;
+  border: 1.5px solid #101B3A;
+  background: transparent;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative; overflow: hidden;
+}
+.sparkle-pill .star {
+  font-size: 16px; color: #101B3A;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sparkle-pill.active {
+  background: #101B3A;
+  border-color: #101B3A;
+  box-shadow: 0 0 18px rgba(255, 239, 0, 0.40);
+}
+.sparkle-pill.active .star {
+  color: #FFEF00;
+  text-shadow: 0 0 8px rgba(255, 239, 0, 0.6);
+  animation: starTwinkle 1.4s ease-in-out infinite;
+}
+.sparkle-pill.active .star:nth-child(2) {
+  animation-delay: 0.7s;
+}
+
+@keyframes starTwinkle {
+  0%, 100% { transform: scale(1);    opacity: 1;   }
+  50%      { transform: scale(1.25); opacity: 0.75; }
+}
+
+.sparkle-pill.processing::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,239,0,0.35), transparent);
+  animation: sweep 1.6s linear infinite;
+}
+@keyframes sweep { 0% { left: -100%; } 100% { left: 100%; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .sparkle-pill.active .star,
+  .sparkle-pill.processing::after { animation: none !important; }
+}</pre>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const input  = document.getElementById('liveInput');
+  const pill   = document.getElementById('livePill');
+  const sendBtn = document.getElementById('sendBtn');
+
+  input.addEventListener('input', () => {
+    if (input.value.length > 0) {
+      pill.classList.add('active');
+    } else {
+      pill.classList.remove('active');
+      pill.classList.remove('processing');
+    }
+  });
+
+  function submitQuery() {
+    if (input.value.length === 0) return;
+    pill.classList.add('active', 'processing');
+    setTimeout(() => {
+      pill.classList.remove('processing');
+      input.value = '';
+      pill.classList.remove('active');
+    }, 3000);
+  }
+
+  sendBtn.addEventListener('click', submitQuery);
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') submitQuery();
+  });
+</script>
+</body>
+</html>
