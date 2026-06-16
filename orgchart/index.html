@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Echelon Org Chart · 2026-06-16</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #101B3A;
+    --navy-soft: #1f2c54;
+    --cloud: #F1F4FA;
+    --line: rgba(16,27,58,0.10);
+    --ink: #1a1a1a;
+    --ink2: #555;
+    --ink3: #888;
+    --chin: #2A5C8D;
+    --beon: #6B4FAA;
+    --legate: #2D7D6B;
+    --omega: #9E4327;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Oswald', sans-serif;
+    background: var(--cloud);
+    color: var(--ink);
+    padding: 48px 56px;
+    min-height: 100vh;
+  }
+  .page { max-width: 1280px; margin: 0 auto; }
+
+  header { margin-bottom: 32px; border-bottom: 2px solid var(--navy); padding-bottom: 16px; }
+  h1 { font-size: 32px; font-weight: 700; letter-spacing: -0.01em; color: var(--navy); }
+  .stamp { font-size: 13px; color: var(--ink2); margin-top: 6px; letter-spacing: 0.04em; }
+  .stamp .count { font-weight: 700; color: var(--navy); }
+
+  .section-label {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 12px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.18em; color: var(--navy);
+    margin: 36px 0 16px;
+  }
+  .section-label .bar { flex: 1; height: 1px; background: var(--line); }
+
+  .agents-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+  .col-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    padding-bottom: 10px; margin-bottom: 16px;
+    border-bottom: 1px solid var(--line);
+  }
+  .col-head .name {
+    font-size: 16px; font-weight: 700; letter-spacing: 0.04em;
+    text-transform: uppercase; color: var(--navy);
+  }
+  .col-head .meta { font-size: 11px; color: var(--ink3); letter-spacing: 0.06em; }
+  .col-head .chip {
+    display: inline-block; background: var(--navy); color: #fff;
+    font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 999px;
+    margin-left: 8px; letter-spacing: 0.06em;
+  }
+
+  .agent-card {
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    padding: 16px 18px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    position: relative;
+  }
+  .agent-card .accent {
+    position: absolute; top: 0; left: 0; bottom: 0;
+    width: 3px; border-radius: 10px 0 0 10px;
+  }
+  .col-chin .agent-card .accent { background: var(--chin); }
+  .col-beon .agent-card .accent { background: var(--beon); }
+  .agent-card .name {
+    font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 2px;
+  }
+  .agent-card .role {
+    font-size: 12px; color: var(--ink2); text-transform: uppercase;
+    letter-spacing: 0.06em; margin-bottom: 8px; font-weight: 500;
+  }
+  .agent-card .desc {
+    font-size: 12.5px; color: var(--ink); line-height: 1.45;
+  }
+  .agent-card .desc strong { color: var(--navy); }
+  .agent-card .channel {
+    display: inline-block; margin-top: 8px;
+    font-family: ui-monospace, monospace;
+    font-size: 10.5px; color: var(--navy);
+    background: rgba(16,27,58,0.06); padding: 2px 7px; border-radius: 4px;
+  }
+  .agent-card .reports-to {
+    margin-top: 6px; font-size: 11px; color: var(--ink3);
+    font-style: italic;
+  }
+
+  /* Legates table */
+  .legates {
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    padding: 8px 20px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+  }
+  .legates table { width: 100%; border-collapse: collapse; }
+  .legates th, .legates td {
+    padding: 12px 8px; text-align: left; font-size: 13px;
+    border-bottom: 1px solid var(--line);
+  }
+  .legates tr:last-child td { border-bottom: none; }
+  .legates th {
+    font-size: 10.5px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--ink3);
+  }
+  .legates td.human { font-weight: 600; color: var(--navy); width: 18%; }
+  .legates td.legate {
+    font-weight: 700; color: var(--legate); width: 18%;
+    font-size: 14.5px;
+  }
+  .legates td.legate .dot {
+    display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    margin-right: 8px; vertical-align: middle;
+  }
+  .legates td.legate .dot.active { background: var(--legate); }
+  .legates td.legate .dot.inactive { background: var(--ink3); }
+  .legates td.legate .dot.new { background: var(--omega); }
+  .legates td.status { color: var(--ink2); font-size: 12.5px; }
+  .legates td.status .pill {
+    display: inline-block; font-size: 10px; font-weight: 700;
+    padding: 1px 6px; border-radius: 3px; margin-right: 8px;
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .legates td.status .pill.active { background: rgba(45,125,107,0.15); color: var(--legate); }
+  .legates td.status .pill.inactive { background: rgba(136,136,136,0.15); color: var(--ink3); }
+  .legates td.status .pill.new { background: rgba(158,67,39,0.15); color: var(--omega); }
+
+  /* OMEGA box */
+  .omega-box {
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    padding: 24px 28px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    position: relative;
+    border-left: 4px solid var(--omega);
+  }
+  .omega-box .title {
+    display: flex; align-items: baseline; gap: 14px;
+    margin-bottom: 14px;
+  }
+  .omega-box .title .name {
+    font-size: 22px; font-weight: 700; color: var(--omega);
+    letter-spacing: 0.02em;
+  }
+  .omega-box .title .sub {
+    font-size: 12px; color: var(--ink2);
+    text-transform: uppercase; letter-spacing: 0.1em;
+  }
+  .omega-box p {
+    font-size: 12.5px; color: var(--ink); line-height: 1.55;
+    margin-bottom: 10px; max-width: 980px;
+  }
+  .omega-box p:last-child { margin-bottom: 0; }
+  .omega-box code {
+    font-family: ui-monospace, monospace; font-size: 11.5px;
+    background: rgba(158,67,39,0.08); padding: 1px 5px; border-radius: 3px;
+    color: var(--omega);
+  }
+  .omega-box .quote { font-style: italic; color: var(--ink2); }
+
+  /* Tiers */
+  .tiers {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 18px;
+  }
+  .tier {
+    background: #fff; border-radius: 10px;
+    border: 1px solid var(--line);
+    padding: 18px 20px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+  }
+  .tier h3 {
+    font-size: 14px; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; margin-bottom: 10px;
+  }
+  .tier.agents h3 { color: var(--chin); }
+  .tier.legates h3 { color: var(--legate); }
+  .tier.omega h3 { color: var(--omega); }
+  .tier p { font-size: 12px; color: var(--ink); line-height: 1.5; margin-bottom: 6px; }
+  .tier .ex {
+    font-size: 11.5px; color: var(--ink2); font-style: italic;
+    margin-top: 6px;
+  }
+  .tier .count {
+    font-family: ui-monospace, monospace; font-size: 11px;
+    color: var(--ink3); margin-top: 8px;
+  }
+
+  footer {
+    margin-top: 36px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+    font-size: 11px; color: var(--ink3);
+    letter-spacing: 0.06em;
+    display: flex; justify-content: space-between;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <h1>Echelon · Org Chart</h1>
+    <div class="stamp">
+      AS OF 2026-06-16 ·
+      <span class="count">9</span> AGENTS ·
+      <span class="count">5</span> LEGATES ·
+      <span class="count">1</span> PLATFORM LAYER
+    </div>
+  </header>
+
+  <div class="section-label"><span>Agents · role-based</span><span class="bar"></span></div>
+
+  <div class="agents-grid">
+
+    <div class="col col-chin">
+      <div class="col-head">
+        <div><span class="name">Chinchilla Internal</span><span class="chip">3</span></div>
+        <div class="meta">FLAT TRIAD</div>
+      </div>
+
+      <div class="agent-card">
+        <div class="accent"></div>
+        <div class="name">Chia</div>
+        <div class="role">Project Manager</div>
+        <div class="desc">Intake, scoping, platform canary validation. The executive front door for internal operations.</div>
+      </div>
+
+      <div class="agent-card">
+        <div class="accent"></div>
+        <div class="name">Marcus</div>
+        <div class="role">Developer · Full-Access Terminal</div>
+        <div class="desc">Internal platform work, deploys, emergency remote terminal. Receipt-first.</div>
+      </div>
+
+      <div class="agent-card">
+        <div class="accent"></div>
+        <div class="name">Maya</div>
+        <div class="role">Data Analyst · Canary</div>
+        <div class="desc">Fleet-data analysis and platform-upgrade canary co-host.</div>
+      </div>
+    </div>
+
+    <div class="col col-beon">
+      <div class="col-head">
+        <div><span class="name">Beon / TI</span><span class="chip">6</span></div>
+        <div class="meta">BEON PROD EC2 · OPENED 2026-05-30</div>
+      </div>
+
+      <div class="agent-card">
+        <div class="accent"></div>
+        <div class="name">Tuck</div>
+        <div class="role">Project Manager</div>
+        <div class="desc">Converts Slack discussions and meeting notes into GitHub issues for transportation-insight.</div>
+        <div class="channel">#beon-iq-pm</div>
+      </div>
+
+      <div class="agent-card">
+        <div class="accent"></div>
+        <div class="name">Sally</div>
+        <div class="role">Data Architect</div>
+        <div class="desc">Transitioning to pure-Python data analyst as Micah absorbs the DevOps lane.</div>
+        <div class="channel">#beon-iq-data-architect</div>
+      </div>
+
+      <div class="agent-card">
+        <div class="accent"></div>
+        <div class="name">Micah</div>
+        <div class="role">Engineer · Dev + DevOps</div>
+        <div class="desc">Builds and ships. Holds the Databricks CLI surface; doubles as the squad's DevOps tooling.</div>
+        <div class="channel">#beon-iq-app-backend</div>
+      </div>
+
+      <div class="agent-card">
+        <div class="accent"></div>
+        <div class="name">Ivy</div>
+        <div class="role">Data Ingestion</div>
+        <div class="desc">Drop-in file intake → schema eval → Genie mapping → Service Principal → X2 pushback. Compresses 2-4 week onboarding to hours.</div>
+        <div class="channel">#beon-iq-data-ingestion</div>
+        <div class="reports-to">reports to Nowell</div>
+      </div>
+
+      <div class="agent-card">
+        <div class="accent"></div>
+        <div class="name">Nova</div>
+        <div class="role">BI & Semantic Modeling</div>
+        <div class="desc">Builds Gold-level semantic models, KPI definitions, dashboards, and reports.</div>
+        <div class="channel">#beon-iq-bi · #beon-iq-freight</div>
+        <div class="reports-to">reports to Product Analytics Lead</div>
+      </div>
+
+      <div class="agent-card">
+        <div class="accent"></div>
+        <div class="name">Leon</div>
+        <div class="role">Supply Chain Consultant · What-If</div>
+        <div class="desc">Deterministic re-rating scenarios: fuel cost, carrier removal, lane filtering, LTL consolidation. <strong>No predictive ML.</strong></div>
+        <div class="channel">#beon-iq-supplychainanalyst</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="section-label"><span>Legates · persona-based · 1:1 with a human</span><span class="bar"></span></div>
+
+  <div class="legates">
+    <table>
+      <thead>
+        <tr><th style="width:18%">Human</th><th style="width:18%">Legate</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="human">Jamie</td>
+          <td class="legate"><span class="dot active"></span>Blake</td>
+          <td class="status"><span class="pill active">active</span>Default Chinchilla AI poster</td>
+        </tr>
+        <tr>
+          <td class="human">Abel</td>
+          <td class="legate"><span class="dot active"></span>Claude</td>
+          <td class="status"><span class="pill active">active</span>Relays Abel's CLI to Slack</td>
+        </tr>
+        <tr>
+          <td class="human">Soroush</td>
+          <td class="legate"><span class="dot active"></span>Sky</td>
+          <td class="status"><span class="pill active">active</span></td>
+        </tr>
+        <tr>
+          <td class="human">Hailee</td>
+          <td class="legate"><span class="dot inactive"></span>Laila</td>
+          <td class="status"><span class="pill inactive">inactive</span></td>
+        </tr>
+        <tr>
+          <td class="human">Keeks</td>
+          <td class="legate"><span class="dot new"></span>Galileo</td>
+          <td class="status"><span class="pill new">new</span>Created 2026-06-15 · runner not yet built</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section-label"><span>Platform layer · not an agent, not a legate</span><span class="bar"></span></div>
+
+  <div class="omega-box">
+    <div class="title">
+      <div class="name">OMEGA</div>
+      <div class="sub">Platform Coordinator</div>
+    </div>
+    <p>Per Echelon <code>CLAUDE.md</code>: <span class="quote">"the realized Hightower, renamed."</span> Runs a fast ~3-minute loop, reads the Board + lane inboxes, and routes work to lanes via the side-door. Coordination is internal via <code>var/the-line-board.db</code>, not Slack channels.</p>
+    <p>The Board is canonical live state. Static metadata drifts; the Board doesn't lie.</p>
+    <p>Supersedes the old Relay / Hightower / Coordinator Slack-assembly-line model. The Python <code>coordinator/</code> source is dead code retained for history; deprecated 2026-05-22, no host runs it.</p>
+    <p><strong>"Bridge"</strong> · Abel's earlier May term for the narrower Claude-Code-to-Slack hookup for his TI session. That hookup still exists at that scope but is not the platform orchestrator. OMEGA is.</p>
+  </div>
+
+  <div class="section-label"><span>The three tiers</span><span class="bar"></span></div>
+
+  <div class="tiers">
+    <div class="tier agents">
+      <h3>Agents</h3>
+      <p>Role-based. Serve a function (PM, Dev, BI, Ingestion, etc.). Act autonomously within their scope.</p>
+      <p class="ex">Chia takes intake. Tuck files issues. Leon runs what-ifs.</p>
+      <p class="count">9 · 3 Chinchilla + 6 Beon</p>
+    </div>
+    <div class="tier legates">
+      <h3>Legates</h3>
+      <p>Persona-based. 1:1 with a human. Act on that human's behalf via their Claude Code session.</p>
+      <p class="ex">Blake speaks for Jamie. Galileo speaks for Keeks.</p>
+      <p class="count">5 · 3 active · 1 inactive · 1 new</p>
+    </div>
+    <div class="tier omega">
+      <h3>OMEGA</h3>
+      <p>Platform layer. The fast-watcher and work-router that sits under everything else.</p>
+      <p class="ex">Runs the ~3-min loop, reads the Board, routes to lanes.</p>
+      <p class="count">1 · the realized Hightower</p>
+    </div>
+  </div>
+
+  <footer>
+    <div>ECHELON · CHINCHILLA AI</div>
+    <div>org chart · 2026-06-16</div>
+  </footer>
+
+</div>
+</body>
+</html>
