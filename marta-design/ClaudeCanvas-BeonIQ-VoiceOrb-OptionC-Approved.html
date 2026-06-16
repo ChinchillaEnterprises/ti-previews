@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BeonIQ — Voice + Orb Layout — Option C (Approved)</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+<style>
+:root {
+    --beon-black: #000000;
+    --beon-yellow: #FFEF00;
+    --beon-cloud: #F1F4FA;
+    --beon-gray: #B9BEC5;
+    --beon-teal: #007587;
+    --glass-bg: rgba(255, 255, 255, 0.15);
+    --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Oswald', sans-serif;
+    background: var(--beon-cloud);
+    color: var(--beon-black);
+    -webkit-font-smoothing: antialiased;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* ===== APPROVED BADGE ===== */
+.approved-banner {
+    background: #16a34a;
+    color: white;
+    text-align: center;
+    padding: 8px;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* ===== BEONIQ CARD CONTEXT — matches page.tsx background ===== */
+.card-context {
+    background:
+        radial-gradient(ellipse 800px 400px at 20% 40%, rgba(255, 239, 0, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse 900px 450px at 80% 30%, rgba(0, 117, 135, 0.12) 0%, transparent 50%),
+        radial-gradient(ellipse 700px 500px at 50% 60%, rgba(255, 239, 0, 0.18) 0%, transparent 50%),
+        radial-gradient(ellipse 800px 400px at 70% 70%, rgba(0, 117, 135, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse 600px 350px at 30% 80%, rgba(255, 239, 0, 0.12) 0%, transparent 50%),
+        var(--beon-cloud);
+    min-height: 100vh;
+}
+
+/* ===== TOP PANEL — pure black ===== */
+.top-panel {
+    background: var(--beon-black);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nav-bar {
+    padding: 11px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav-logo {
+    font-weight: 700;
+    font-size: 18px;
+    color: white;
+    letter-spacing: 1px;
+}
+.nav-logo span { color: var(--beon-yellow); }
+
+.nav-links { display: flex; gap: 24px; align-items: center; }
+
+.nav-link {
+    font-weight: 400;
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    text-decoration: none;
+    cursor: pointer;
+}
+.nav-link.active { color: var(--beon-yellow); }
+
+.nav-user { display: flex; align-items: center; gap: 8px; }
+.nav-user-name { font-size: 11px; color: rgba(255,255,255,0.45); }
+.nav-avatar {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--beon-yellow) 0%, #e6d700 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 600; font-size: 10px; color: var(--beon-black);
+}
+
+/* ===== GREETING + ORB AREA ===== */
+.greeting-area {
+    padding: 28px 32px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 64px;
+}
+
+.greeting-text h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #FFFFFF;
+    line-height: 1.2;
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+}
+
+.greeting-text p {
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+/* ===== LARGE ORB — beoniqOrbPalette ===== */
+.orb-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.orb-column:hover { transform: scale(1.05); }
+
+.orb-large {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at 38% 38%, rgba(255, 215, 0, 0.75) 0%, rgba(255, 210, 0, 0.4) 35%, transparent 55%),
+        radial-gradient(circle at 62% 62%, rgba(0, 200, 220, 0.5) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgb(20, 60, 85) 0%, rgb(15, 50, 75) 100%);
+    box-shadow:
+        0 0 30px rgba(255, 215, 0, 0.3),
+        0 0 60px rgba(255, 210, 0, 0.15),
+        0 0 100px rgba(255, 205, 0, 0.08);
+    cursor: pointer;
+    transition: all 0.4s ease;
+    position: relative;
+    animation: orb-breathe 4s ease-in-out infinite;
+}
+
+.orb-large:hover {
+    box-shadow:
+        0 0 40px rgba(255, 215, 0, 0.45),
+        0 0 80px rgba(255, 210, 0, 0.2),
+        0 0 120px rgba(255, 205, 0, 0.1);
+    transform: scale(1.04);
+}
+
+.orb-large::before {
+    content: '';
+    position: absolute;
+    width: 55%; height: 55%;
+    top: 18%; left: 18%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.6) 0%, rgba(255, 210, 0, 0.15) 60%, transparent 100%);
+    animation: orb-inner-pulse 3s ease-in-out infinite alternate;
+}
+
+.orb-large::after {
+    content: '';
+    position: absolute;
+    width: 30%; height: 30%;
+    top: 12%; left: 22%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.08) 50%, transparent 100%);
+}
+
+@keyframes orb-breathe {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+}
+
+@keyframes orb-inner-pulse {
+    0% { opacity: 0.7; transform: scale(0.95); }
+    100% { opacity: 1; transform: scale(1.05); }
+}
+
+.orb-label {
+    font-weight: 600;
+    font-size: 14px;
+    color: #FFFFFF;
+    text-align: center;
+    letter-spacing: 0.5px;
+    margin-top: 12px;
+}
+
+.orb-sublabel {
+    font-size: 11px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.6);
+    text-align: center;
+    margin-top: 4px;
+}
+
+/* ===== OPTION C: Ask AI Pill Below Orb ===== */
+.ask-ai-pill {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 22px;
+    border-radius: 24px;
+    border: 1.5px solid rgba(0, 117, 135, 0.25);
+    background: rgba(0, 117, 135, 0.04);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.ask-ai-pill:hover {
+    border-color: rgba(0, 117, 135, 0.5);
+    background: rgba(0, 117, 135, 0.1);
+    box-shadow: 0 0 20px rgba(0, 117, 135, 0.12);
+    transform: translateY(-1px);
+}
+
+.ask-ai-pill .material-icons-round {
+    font-size: 16px;
+    color: var(--beon-teal);
+}
+
+.ask-ai-pill span.pill-text {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--beon-teal);
+    letter-spacing: 0.3px;
+}
+
+/* ===== SEARCH BAR ===== */
+.search-area {
+    padding: 0 32px 28px;
+    max-width: 832px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.search-input {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(255, 255, 255, 0.1);
+    padding: 14px 16px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 15px;
+    color: #FFFFFF;
+    outline: none;
+    transition: all 0.3s ease;
+}
+.search-input::placeholder { color: #FFFFFF; opacity: 0.5; }
+.search-input:focus {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 239, 0, 0.6);
+    box-shadow: 0 0 0 2px rgba(255, 239, 0, 0.3), 0 8px 32px rgba(255, 239, 0, 0.2);
+}
+
+.search-btn {
+    width: 48px; height: 48px;
+    border-radius: 8px;
+    background: var(--beon-yellow);
+    color: var(--beon-black);
+    display: flex; align-items: center; justify-content: center;
+    border: none; cursor: pointer;
+    box-shadow: 0 2px 8px rgba(255, 239, 0, 0.3);
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+.search-btn:hover {
+    box-shadow: 0 4px 16px rgba(255, 239, 0, 0.5), 0 0 20px rgba(255, 239, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+/* ===== CONTENT AREA ===== */
+.content-area { padding: 28px 32px 32px; }
+
+/* ===== GLASS CARD ===== */
+.briefing-card {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: none;
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.briefing-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 22px 14px;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+.briefing-title-area { flex: 1; }
+
+.briefing-title {
+    font-weight: 600;
+    font-size: 17px;
+    color: var(--beon-black);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.briefing-meta {
+    font-size: 11px;
+    color: rgba(0,0,0,0.42);
+    margin-top: 2px;
+}
+.briefing-meta strong { color: rgba(0,0,0,0.6); font-weight: 500; }
+
+.search-pills { display: flex; gap: 7px; align-items: center; }
+
+.pill {
+    font-size: 10px; font-weight: 500;
+    padding: 3px 10px; border-radius: 20px;
+    background: rgba(0, 117, 135, 0.08);
+    color: var(--beon-teal);
+    border: 1px solid rgba(0, 117, 135, 0.12);
+    cursor: pointer;
+}
+.pill.active { background: var(--beon-teal); color: white; border-color: var(--beon-teal); }
+
+.briefing-body { padding: 18px 22px 20px; }
+
+.summary-bullets { list-style: none; }
+
+.summary-bullets li {
+    font-size: 13px;
+    font-weight: 400;
+    color: rgba(0,0,0,0.72);
+    line-height: 1.7;
+    padding-left: 18px;
+    position: relative;
+}
+
+.summary-bullets li::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 9px;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--beon-yellow);
+    box-shadow: 0 0 6px rgba(255,239,0,0.4);
+}
+
+.badges { display: flex; gap: 10px; margin-top: 14px; }
+
+.badge {
+    font-size: 10px; font-weight: 600;
+    padding: 4px 12px; border-radius: 20px;
+    letter-spacing: 0.3px;
+}
+
+.badge.outliers {
+    background: rgba(239, 68, 68, 0.08);
+    color: #dc2626;
+    border: 1px solid rgba(239, 68, 68, 0.15);
+}
+
+.badge.recs {
+    background: rgba(34, 197, 94, 0.08);
+    color: #16a34a;
+    border: 1px solid rgba(34, 197, 94, 0.15);
+}
+
+/* ===== SPEC NOTES ===== */
+.spec-notes {
+    max-width: 700px;
+    margin: 32px auto;
+    padding: 20px 24px;
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+}
+
+.spec-notes h3 {
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--beon-black);
+    margin-bottom: 12px;
+}
+
+.spec-notes ul {
+    list-style: none;
+    padding: 0;
+}
+
+.spec-notes li {
+    font-size: 12px;
+    color: rgba(0,0,0,0.65);
+    line-height: 1.7;
+    padding-left: 16px;
+    position: relative;
+    margin-bottom: 4px;
+}
+
+.spec-notes li::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 8px;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--beon-teal);
+}
+
+.spec-notes li strong { color: rgba(0,0,0,0.85); }
+</style>
+</head>
+<body>
+
+<div class="approved-banner">APPROVED BY MARTA — OPTION C — MARCH 2, 2026</div>
+
+<div class="card-context">
+    <div class="top-panel">
+        <div class="nav-bar">
+            <div class="nav-logo">BEON<span>IQ</span></div>
+            <div class="nav-links">
+                <a class="nav-link active">Overview</a>
+                <a class="nav-link">Ask Data</a>
+                <a class="nav-link">Reports</a>
+            </div>
+            <div class="nav-user">
+                <span class="nav-user-name">Marta B.</span>
+                <div class="nav-avatar">MB</div>
+            </div>
+        </div>
+
+        <div class="greeting-area">
+            <div class="greeting-text">
+                <h1>Good Morning, Marta</h1>
+                <p>AI-driven analysis pinpointing your network's next optimization opportunity</p>
+            </div>
+            <div class="orb-column">
+                <div class="orb-large"></div>
+                <div class="orb-label">AI Daily Summary</div>
+                <div class="orb-sublabel">Click orb to view full report</div>
+                <div class="ask-ai-pill">
+                    <span class="material-icons-round">mic</span>
+                    <span class="pill-text">Ask AI</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="search-area">
+            <input class="search-input" placeholder="Type your question" disabled>
+            <button class="search-btn">
+                <span class="material-icons-round" style="font-size: 24px;">arrow_forward</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="content-area">
+        <div class="briefing-card">
+            <div class="briefing-header">
+                <div class="briefing-title-area">
+                    <div class="briefing-title">Daily Briefing</div>
+                    <div class="briefing-meta">Mar 2, 2026 · <strong>KGPCO</strong> · Finance</div>
+                </div>
+                <div class="search-pills">
+                    <div class="pill active">KGPCO</div>
+                    <div class="pill">Fanatics</div>
+                    <div class="pill">All</div>
+                </div>
+            </div>
+
+            <div class="briefing-body">
+                <ul class="summary-bullets">
+                    <li>Volume up <strong>12% WoW</strong>, cost per shipment down 3.1%</li>
+                    <li>On-time delivery at <strong>94.2%</strong>, above target. Claims rate spiked to 1.8%</li>
+                    <li>Recommend consolidating LAX–ORD lanes for $4.2K monthly savings</li>
+                </ul>
+                <div class="badges">
+                    <div class="badge outliers">2 Outliers</div>
+                    <div class="badge recs">3 Recommendations</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="spec-notes">
+            <h3>Implementation Spec</h3>
+            <ul>
+                <li><strong>Orb click</strong> → Opens summary modal (read mode)</li>
+                <li><strong>Ask AI pill click</strong> → Voice/chat with cached daily summary pre-loaded (no re-prompt)</li>
+                <li>Pill shape avoids two-circles visual problem</li>
+                <li>Teal accent matches brand interactive color</li>
+                <li>Voice should be <strong>ChatGPT-style</strong> — continuous multi-turn conversation, no re-clicking mic between turns</li>
+                <li>Voice agent uses <strong>cached daily summary</strong> as context, not re-running the expensive generation prompt</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
