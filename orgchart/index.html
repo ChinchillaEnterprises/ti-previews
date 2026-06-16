@@ -390,6 +390,58 @@
     </div>
   </div>
 
+  <div class="section-label"><span>Glossary · terms of art</span><span class="bar"></span></div>
+
+  <div class="legates">
+    <table>
+      <thead>
+        <tr><th style="width:18%">Term</th><th>Definition</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="human">THE LINE</td>
+          <td class="status">The platform's 5-lane Mixed-Model Lean Line (Toyota-style). Carries two products down one pipeline (the platform itself and the agents). Supersedes the older "Relay / Hightower / Coordinator" Slack-assembly-line model.</td>
+        </tr>
+        <tr>
+          <td class="human">Lane</td>
+          <td class="status">One station on THE LINE. The five lanes are <b>ROMEO</b> (R&amp;D · <code>/rnd</code>, floats outside, feeds ALPHA on demand), <b>ALPHA</b> (Architecture · <code>/arch</code>), <b>BRAVO</b> (Development · <code>/dev</code>), <b>CHARLIE</b> (between BRAVO and DELTA), <b>DELTA</b> (Test+Observation · <code>/test</code>, owns the green check). Forward flow: ALPHA → BRAVO → CHARLIE → DELTA, with fail-back routing on any failed gate. Lanes boot via the <code>lane &lt;x&gt;</code> launcher on Abel's Pro and are currently human-driven (Abel or Soroush only).</td>
+        </tr>
+        <tr>
+          <td class="human">Lane inbox</td>
+          <td class="status">Where each lane reads incoming work from. OMEGA writes here when routing.</td>
+        </tr>
+        <tr>
+          <td class="human">Side-door</td>
+          <td class="status">An internal MCP-based channel lanes use to talk to each other and to OMEGA, bypassing Slack. Implemented as <code>mcp__sidedoor__send_to_lane</code>. It carries a tiny "check the Board" nudge (a pointer to a round + baton path), <b>never</b> the work payload itself. The receiver reads the actual work from the Board.</td>
+        </tr>
+        <tr>
+          <td class="human">The Board</td>
+          <td class="status"><code>var/the-line-board.db</code> — the canonical live-state SQLite database (better-sqlite3, WAL, single-writer). Holds round_id, stage, ordering, dedup state. <b>The Board is the truth; everything else is a readout.</b> Static metadata drifts; the Board doesn't lie.</td>
+        </tr>
+        <tr>
+          <td class="human">Baton</td>
+          <td class="status">A markdown document that carries one change down the lanes. DELTA writes an evidence-cited postmortem when work completes.</td>
+        </tr>
+        <tr>
+          <td class="human">/jj</td>
+          <td class="status">The manual doorbell. Drains the lane's inbox and re-reads the Board immediately, on demand.</td>
+        </tr>
+        <tr>
+          <td class="human">Squad</td>
+          <td class="status">A pair or trio of agents that work together at the lane level. Beon-side squads: <b>Tuck + Sally + Micah</b> (PM/architect/engineer) and <b>Ivy + Nova + Leon</b> (ingestion/BI/what-if).</td>
+        </tr>
+        <tr>
+          <td class="human">Nowell</td>
+          <td class="status">Person on the Beon/TI client side (not Chinchilla). Owns Databricks workspace permissions for transportation-insight — Service Principals, PATs, RLS entitlements. Ivy reports to him because data ingestion requires his approvals. Member of the <code>#beon-iq-data</code> Slack Connect channel.</td>
+        </tr>
+        <tr>
+          <td class="human">Bridge (legacy)</td>
+          <td class="status">Abel's earlier May term for the narrow Claude-Code-to-Slack hookup tied to his TI session. The hookup still exists at that scope but is <b>not</b> the platform orchestrator. <b>OMEGA</b> is.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
   <footer>
     <div>ECHELON · CHINCHILLA AI</div>
     <div>org chart · 2026-06-16</div>
